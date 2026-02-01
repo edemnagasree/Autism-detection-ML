@@ -1,0 +1,173 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "4126a0ec",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Fold: 1\n",
+      "Accuracy: 0.8852459016393442\n",
+      "Fold: 2\n",
+      "Accuracy: 0.8360655737704918\n",
+      "Fold: 3\n",
+      "Accuracy: 0.8524590163934426\n",
+      "Fold: 4\n",
+      "Accuracy: 0.8852459016393442\n",
+      "Fold: 5\n",
+      "Accuracy: 0.9836065573770492\n",
+      "Mean accuracy across all folds: 0.8885245901639344\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np \n",
+    "import pandas as pd \n",
+    "from sklearn.metrics import confusion_matrix,accuracy_score,roc_auc_score,classification_report #for model evaluation\n",
+    "import matplotlib.pyplot as plt \n",
+    "import seaborn as sns\n",
+    "import plotly.express as px #for creating interactive visualizations\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn import preprocessing\n",
+    "from collections import Counter #for counting occurrences in a dataset.\n",
+    "from sklearn import metrics #includes various metrics for evaluating machine learning models.\n",
+    "import warnings\n",
+    "warnings.filterwarnings(\"ignore\")\n",
+    "df=pd.read_csv(\"C:\\\\Users\\\\nagas\\\\OneDrive\\\\Documents\\\\project\\\\archive (1)\\\\archive (1)\\\\archive\\\\Young_ASD.csv\")\n",
+    "# Perform label encoding for binary categorical variables\n",
+    "binary_cols = ['Jaundice', 'Family_mem_with_ASD','ASD_traits']\n",
+    "for col in binary_cols:\n",
+    "    df[col] = df[col].map({'No': 0, 'Yes': 1})\n",
+    "\n",
+    "# Perform one-hot encoding for categorical variables with more than two unique values\n",
+    "categorical_cols = ['Who_completed_the_test']\n",
+    "df = pd.get_dummies(df, columns=categorical_cols)\n",
+    "\n",
+    "# Now your DataFrame will have numerical features suitable for machine learning algorithms\n",
+    "# Map 'M' to 1 and 'F' to 0 in the 'Sex' column\n",
+    "df['Sex'] = df['Sex'].map({'M': 1, 'F': 0})\n",
+    "columns_to_drop = ['Unnamed: 0','Sex','Who_completed_the_test_Others', 'Who_completed_the_test_Parent','Who_completed_the_test_Relative','Ethnicity']\n",
+    "df.drop(columns=columns_to_drop, inplace=True)\n",
+    "X = df.drop(columns=['ASD_traits'])  # Dropping the 'ASD_traits' column from features\n",
+    "y = df['ASD_traits']   # Selecting only the ASD_traits column\n",
+    "\n",
+    "# Splitting the data into training and testing sets, with 80% for training and 20% for testing\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+    "from sklearn.model_selection import StratifiedKFold\n",
+    "from sklearn.metrics import accuracy_score\n",
+    "from sklearn.linear_model import LogisticRegression\n",
+    "import numpy as np\n",
+    "\n",
+    "# Create your classifier (Logistic Regression)\n",
+    "lgclassifier = LogisticRegression(max_iter=1000)\n",
+    "\n",
+    "# Define the number of folds for cross-validation\n",
+    "num_folds = 5  # You can adjust this number as needed\n",
+    "\n",
+    "# Initialize StratifiedKFold\n",
+    "skf = StratifiedKFold(n_splits=num_folds, shuffle=True, random_state=42)\n",
+    "\n",
+    "# Lists to store accuracy for each fold and predictions for Logistic Regression\n",
+    "accuracies = []\n",
+    "logistic_predictions = []\n",
+    "\n",
+    "# Perform cross-validation\n",
+    "fold = 1\n",
+    "for train_index, test_index in skf.split(X_train, y_train):\n",
+    "    print(\"Fold:\", fold)\n",
+    "    \n",
+    "    # Get the data for this fold\n",
+    "    X_train_fold, X_val_fold = X_train.iloc[train_index], X_train.iloc[test_index]\n",
+    "    y_train_fold, y_val_fold = y_train.iloc[train_index], y_train.iloc[test_index]\n",
+    "    \n",
+    "    # Train the classifier\n",
+    "    lgclassifier.fit(X_train_fold, y_train_fold)\n",
+    "    \n",
+    "    # Make predictions on the validation set\n",
+    "    y_pred_fold = lgclassifier.predict(X_val_fold)\n",
+    "    \n",
+    "    # Calculate accuracy for this fold\n",
+    "    accuracy_fold = accuracy_score(y_val_fold, y_pred_fold)\n",
+    "    accuracies.append(accuracy_fold)\n",
+    "    \n",
+    "    # Store predictions for this fold\n",
+    "    logistic_predictions.append(y_pred_fold)\n",
+    "    \n",
+    "    print(\"Accuracy:\", accuracy_fold)\n",
+    "    \n",
+    "    fold += 1\n",
+    "\n",
+    "# Calculate the mean accuracy across all folds\n",
+    "mean_accuracy = np.mean(accuracies)\n",
+    "\n",
+    "# Print the mean accuracy\n",
+    "print(\"Mean accuracy across all folds:\", mean_accuracy)\n",
+    "\n",
+    "# To access predictions for each fold, you can use logistic_predictions list\n",
+    "# To access predictions for each fold, you can use logistic_predictions list\n",
+    "import pickle\n",
+    "# Save the trained classifier to a file\n",
+    "pickle.dump(lgclassifier,open(\"youngmodel.pkl\",\"wb\"))\n",
+    "model=pickle.load(open('youngmodel.pkl','rb'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "ee4fb2e0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The pickle file was last modified on: 2024-04-14 10:57:46.922130\n"
+     ]
+    }
+   ],
+   "source": [
+    "import os\n",
+    "from datetime import datetime\n",
+    "\n",
+    "pickle_file_path = 'C:/Users/D.SHASIDHARANI/OneDrive/Desktop/newww/models/youngmodel.pkl'\n",
+    "\n",
+    "# Check if the file exists\n",
+    "if os.path.exists(pickle_file_path):\n",
+    "    # Get the last modification time of the pickle file\n",
+    "    last_modified_timestamp = os.path.getmtime(pickle_file_path)\n",
+    "    \n",
+    "    # Convert timestamp to a readable format\n",
+    "    last_modified_time = datetime.fromtimestamp(last_modified_timestamp)\n",
+    "    \n",
+    "    print(f\"The pickle file was last modified on: {last_modified_time}\")\n",
+    "else:\n",
+    "    print(\"The pickle file does not exist.\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASD Prediction - Children</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>ASD Prediction - Children</h1>
+    <form action="{{ url_for('predict_children')}}" method="POST">
+
+        <label for="A1">When you call your child's name, does S/he look at you?</label><br>
+        <input type="radio" name="A1" id="A1" value="1"> <label for="A1">Yes</label>
+        <input type="radio" name="A1" id="A1" value="0"> <label for="A1">No</label><br>
+        
+        <label for="A2">How quick is your ability to make eye contact with your child?</label><br>
+        <input type="radio" name="A2" id="A2_quick" value="1"> <label for="A2_quick">Quick</label>
+        <input type="radio" name="A2" id="A2_slow" value="0"> <label for="A2_slow">Slow</label><br>
+        
+        <label for="A3">When your child wants something, sometimes a distant toy, does he point to you?</label><br>
+        <input type="radio" name="A3" id="A3" value="1"> <label for="A3">Yes</label>
+        <input type="radio" name="A3" id="A3" value="0"> <label for="A3">No</label><br>
+        
+        <label for="A4">can he/she quickly move between different activities?</label><br>
+        <input type="radio" name="A4" id="A4" value="1"> <label for="A4">Yes</label>
+        <input type="radio" name="A4" id="A4" value="0"> <label for="A4">No</label><br>
+        
+        <label for="A5">Is your child pretending to care for the toy he owns?</label><br>
+        <input type="radio" name="A5" id="A5" value="1"> <label for="A5">Yes</label>
+        <input type="radio" name="A5" id="A5" value="0"> <label for="A5">No</label><br>
+        
+        <label for="A6">Is your child interested in searching with you for lost things?</label><br>
+        <input type="radio" name="A6" id="A6" value="1"> <label for="A6">Yes</label>
+        <input type="radio" name="A6" id="A6" value="0"> <label for="A6">No</label><br>
+        
+        <label for="A7">Your child can console any member of the family if s/he is upset?</label><br>
+        <input type="radio" name="A7" id="A7" value="1"> <label for="A7">Yes</label>
+        <input type="radio" name="A7" id="A7" value="0"> <label for="A7">No</label><br>
+        
+        <label for="A8">In preschool, s/he inclined to play fantasy games with friends?</label><br>
+        <input type="radio" name="A8" id="A8" value="1"> <label for="A8">Yes</label>
+        <input type="radio" name="A8" id="A8" value="0"> <label for="A8">No</label><br>
+        
+        <label for="A9">Does your child interest in sharing activities with you?</label><br>
+        <input type="radio" name="A9" id="A9" value="1"> <label for="A9">Yes</label>
+        <input type="radio" name="A9" id="A9" value="0"> <label for="A9">No</label><br>
+        
+        <label for="A10_Autism_Spectrum_Quotient">Does your child always look at unnecessary things carefully?</label><br>
+        <input type="radio" name="A10_Autism_Spectrum_Quotient" id="A10" value="1"> <label for="A10">Yes</label>
+        <input type="radio" name="A10_Autism_Spectrum_Quotient" id="A10" value="0"> <label for="A10">No</label><br>
+        
+        <label for="Age_Years">Select your child's age (between 1 and 10 years):</label><br>
+        <input type="number" name="Age_Years" min="1" max="10"><br>
+        
+        <label for="Jaundice">Does your child have Jaundice?</label><br>
+        <input type="radio" name="Jaundice" id="Jaundice" value="1"> <label for="Jaundice">Yes</label>
+        <input type="radio" name="Jaundice" id="Jaundice" value="0"> <label for="Jaundice">No</label><br>
+        
+        <label for="Family_mem_with_ASD">Does any of your family members have ASD?</label><br>
+        <input type="radio" name="Family_mem_with_ASD" id="Family_mem_with_ASD" value="1"> <label for="Family_mem_with_ASD">Yes</label>
+        <input type="radio" name="Family_mem_with_ASD" id="Family_mem_with_ASD" value="0"> <label for="Family_mem_with_ASD">No</label><br>
+        
+        <label for="Who_completed_the_test_Family_Member">Was the test conducted by a family member?</label><br>
+        <input type="radio" name="Who_completed_the_test_Family_Member" id="Family_member" value="1"> <label for="Family_member">Yes</label>
+        <input type="radio" name="Who_completed_the_test_Family_Member" id="Family_member" value="0"> <label for="Family_member">No</label><br>
+        
+        <label for="Who_completed_the_test_Health_Care_Professional">Was the test conducted by a healthcare professional?</label><br>
+        <input type="radio" name="Who_completed_the_test_Health_Care_Professional" id="Health_professional" value="1"> <label for="Health_professional">Yes</label>
+        <input type="radio" name="Who_completed_the_test_Health_Care_Professional" id="Health_professional" value="0"> <label for="Health_professional">No</label><br>
+        
+        <input type="submit" value="Predict">
+    </form>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
+

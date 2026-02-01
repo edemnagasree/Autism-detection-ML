@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASD Prediction Result</title>
+</head>
+<body>
+    <h1>ASD Prediction Result</h1>
+    
+    {% if selected_age_group == 'children' %}
+    <h2>Children</h2>
+    <p>Result: {{ children_result }}</p>
+    {% elif selected_age_group == 'adolescent' %}
+    <h2>Adolescent</h2>
+    <p>Result: {{ adolescent_result }}</p>
+    {% elif selected_age_group == 'young' %}
+    <h2>Young</h2>
+    <p>Result: {{ young_result }}</p>
+    {% elif selected_age_group == 'adult' %}
+    <h2>Adult</h2>
+    <p>Result: {{ adult_result }}</p>
+    {% else %}
+    <p>No result available for the selected age group.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
